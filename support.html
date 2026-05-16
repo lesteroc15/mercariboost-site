@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support &amp; FAQ — MercariBoost</title>
+  <meta name="description" content="MercariBoost support and frequently asked questions. How relisting works, account safety, troubleshooting, contact.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Support-page specific styles */
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+      padding: 1rem 0;
+    }
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+    .faq-q {
+      font-weight: 600;
+      font-size: 1.05rem;
+      cursor: pointer;
+      list-style: none;
+      padding-right: 1.5rem;
+      position: relative;
+      color: var(--text);
+    }
+    .faq-q::-webkit-details-marker { display: none; }
+    .faq-q::after {
+      content: '+';
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 1.25rem;
+      color: var(--muted);
+      line-height: 1;
+    }
+    details[open] .faq-q::after { content: '−'; }
+    .faq-a {
+      margin-top: 0.75rem;
+      color: var(--text);
+    }
+    .faq-a p:first-child { margin-top: 0; }
+    .faq-a p:last-child { margin-bottom: 0; }
+    .category-heading {
+      margin: 2rem 0 0.5rem;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .contact-card {
+      background: var(--bg-alt);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      margin: 1rem 0 2rem;
+    }
+    .contact-card h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    .contact-card p {
+      margin: 0.25rem 0;
+    }
+    .contact-card .response-time {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header class="site">
+    <div class="container">
+      <a class="brand" href="./">
+        <span class="brand-mark">↑</span>
+        <span>MercariBoost</span>
+      </a>
+      <nav>
+        <a href="support.html">Support</a>
+        <a href="privacy.html">Privacy</a>
+        <a href="terms.html">Terms</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <article>
+      <h1>Support &amp; FAQ</h1>
+      <p class="meta">Last updated 2026-05-16</p>
+
+      <div class="contact-card">
+        <h2>Need help? Email us directly.</h2>
+        <p><a href="mailto:lesteroc15@gmail.com?subject=MercariBoost%20support">lesteroc15@gmail.com</a></p>
+        <p class="response-time">Typical response time: under 24 hours. Include your Chrome version and a brief description of what you were doing when the issue happened.</p>
+      </div>
+
+      <p class="category-heading">Getting Started</p>
+
+      <details class="faq-item">
+        <summary class="faq-q">How do I install MercariBoost?</summary>
+        <div class="faq-a">
+          <p>Install from the Chrome Web Store, then pin the MercariBoost icon to your Chrome toolbar so it's easy to reach. After install, log into Mercari in any tab (we'll detect your session automatically — we never see your password).</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Do I need to create an account?</summary>
+        <div class="faq-a">
+          <p>No. There's no MercariBoost account, no signup form, and no email collection. The extension works against your existing Mercari login — that's the only account involved.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Why does the extension ask for so many permissions?</summary>
+        <div class="faq-a">
+          <p>Each permission is scoped to what the relist operation needs:</p>
+          <ul>
+            <li><code>storage</code> — saves your listing data locally in your browser (never sent off-device)</li>
+            <li><code>tabs</code> + <code>activeTab</code> + <code>scripting</code> — needed to navigate between Mercari pages and inject the relist logic</li>
+            <li><code>alarms</code> — schedules the daily stale-listing check that updates the badge count</li>
+            <li><code>sidePanel</code> — lets you watch bulk relist progress without keeping the popup open</li>
+            <li><code>debugger</code> — required to interact with Mercari's React-based brand autocomplete and size picker; Mercari rejects synthetic events on those, so we use Chrome DevTools Protocol for real key/click events. Attached only during a relist, detached immediately after.</li>
+            <li><code>host_permissions</code> are restricted to <code>www.mercari.com</code> and Mercari's photo CDN (<code>*.mercdn.net</code>). The extension does nothing on any other site.</li>
+          </ul>
+        </div>
+      </details>
+
+      <p class="category-heading">How Relisting Works</p>
+
+      <details class="faq-item">
+        <summary class="faq-q">What does &quot;relist&quot; actually do?</summary>
+        <div class="faq-a">
+          <p>Relisting deletes your old listing and creates a fresh one with the same content (title, description, photos, price, category, brand, condition, shipping). The new listing gets a new Mercari item ID and goes to the top of search results, where buyers actually look.</p>
+          <p>This is the same workflow you'd do manually — Edit → Delete → New listing — just automated. The extension also handles photo caching so you don't lose images during the delete step.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">How long does a relist take?</summary>
+        <div class="faq-a">
+          <p>A single relist takes 2–3 minutes. The extension intentionally uses randomized human-like delays between each step to avoid looking like automation. Bulk relisting 10 items takes about 25–35 minutes. Bulk relisting 50+ items can take a few hours — start it and let it run in the background.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">How often should I relist?</summary>
+        <div class="faq-a">
+          <p>Common practice among Mercari power-sellers is every 20–40 days per listing. The Stale-Listing Dashboard color-codes your listings by age (Fresh / Aging / Stale) so you can see at a glance which ones need attention. You don't need to relist daily — over-relisting just churns through the rate limit without buying more visibility.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Is there a limit to how many I can relist?</summary>
+        <div class="faq-a">
+          <p>Yes — the extension caps at 10 relists per hour as a self-imposed safety throttle, regardless of how many items you select. Going faster than that risks triggering Mercari's rate-limit / anti-automation systems. The throttle works in the background; you can queue 50 items and walk away, and the extension paces them automatically.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Why is my relist taking longer than expected?</summary>
+        <div class="faq-a">
+          <p>A few common reasons:</p>
+          <ul>
+            <li>Mercari's photo upload can be slow on listings with 8+ photos — wait 30 seconds before assuming it's stuck</li>
+            <li>If you've recently relisted many items, the rate limiter is throttling subsequent ones</li>
+            <li>If Mercari's site is slow (their backend has occasional latency spikes), each step takes longer</li>
+          </ul>
+          <p>If a single relist takes more than 5 minutes with no progress in the side panel, something is wrong — see the troubleshooting FAQ below.</p>
+        </div>
+      </details>
+
+      <p class="category-heading">Account Safety &amp; Privacy</p>
+
+      <details class="faq-item">
+        <summary class="faq-q">Will Mercari ban my account for using this?</summary>
+        <div class="faq-a">
+          <p><strong>Honest answer:</strong> we can't guarantee they won't. Mercari's Terms of Service prohibit the use of automated tools, and they're within their rights to take action against accounts that use third-party automation.</p>
+          <p>The extension is designed to mimic natural human pacing (randomized delays, conservative intervals, no background scraping) to look as un-bot-like as possible. We've not seen reports of bans for typical usage patterns, but we can't make this risk zero.</p>
+          <p>Your account, your responsibility — see our <a href="terms.html#section-3">Terms of Service §3</a> for the full disclosure.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Do you have access to my Mercari account?</summary>
+        <div class="faq-a">
+          <p>No. The extension operates entirely within your browser — it never sees your password, never receives a session token, and never communicates with any server we control. All operations happen on the Mercari tabs that are already authenticated by you.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Where is my listing data stored?</summary>
+        <div class="faq-a">
+          <p>In your browser's local storage (<code>chrome.storage.local</code>), bound to your Chrome profile. Nothing is sent off-device. Uninstalling the extension permanently deletes all of it. See the full <a href="privacy.html">Privacy Policy</a>.</p>
+        </div>
+      </details>
+
+      <p class="category-heading">Troubleshooting</p>
+
+      <details class="faq-item">
+        <summary class="faq-q">The extension shows zero listings — why?</summary>
+        <div class="faq-a">
+          <p>The first time you open the popup, click <strong>Sync Listings</strong> to scrape your active Mercari listings. The sync takes 20–40 seconds depending on how many you have. If sync returns zero, make sure you're logged into Mercari in the same Chrome profile and try refreshing the Mercari tab before syncing again.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">A relist failed mid-way. Did I lose my listing?</summary>
+        <div class="faq-a">
+          <p>Probably not. The extension saves a <strong>recovery payload</strong> before deleting your original — so even if the new listing creation fails after the original was deleted, the listing data (title, description, photos, price, all of it) is still in storage and accessible from the popup's recovery banner. Click <strong>Retry</strong> to re-submit, or <strong>Dismiss</strong> if you'd rather post manually.</p>
+          <p>If you uninstall the extension before clicking Retry, the recovery data is lost — so resolve the banner before reinstalling.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">The extension says &quot;Submit did not redirect to confirmation&quot; — what happened?</summary>
+        <div class="faq-a">
+          <p>This means the new listing didn't successfully post on Mercari's side. Common causes:</p>
+          <ul>
+            <li>Mercari flagged the price (too high, too low, banned keyword in title or description)</li>
+            <li>Mercari's server hiccupped — try again</li>
+            <li>A required field couldn't be filled because Mercari renamed the field testid (selector drift — usually fixed within 24h by us; check <a href="https://github.com/lesteroc15/mercariboost/issues?q=label%3Aselector-drift">our drift issues</a>)</li>
+          </ul>
+          <p>The recovery payload above covers this case — your data is preserved.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Does MercariBoost work on Firefox, Safari, Edge?</summary>
+        <div class="faq-a">
+          <p>Currently Chrome only. Edge should work because it's Chromium-based — try the unpacked install from the GitHub releases page. Firefox and Safari aren't supported; their extension APIs differ enough that we'd need a separate build, which isn't on the near-term roadmap.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">Mercari updated their site and the extension broke.</summary>
+        <div class="faq-a">
+          <p>That happens. Our automated drift watchdog runs every day and opens a GitHub issue the moment any selector breaks — we usually have a hotfix shipped within 24 hours. Check <a href="https://github.com/lesteroc15/mercariboost/issues?q=label%3Aselector-drift">open drift issues on GitHub</a> for current status, and update the extension when a new version ships.</p>
+        </div>
+      </details>
+
+      <p class="category-heading">Pricing</p>
+
+      <details class="faq-item">
+        <summary class="faq-q">Is it really free?</summary>
+        <div class="faq-a">
+          <p>Yes. No trial, no credit card, no signup. The free version is functionally complete — bulk relist, stale-listing dashboard, recovery safety net, all of it.</p>
+          <p>We may introduce a paid tier in the future with optional power-user features (scheduling, analytics, etc.) — but if and when that happens, the version you have installed continues to work at no cost for as long as we operate it. See <a href="terms.html#section-1">Terms §1</a> for the commitment.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary class="faq-q">How do I uninstall?</summary>
+        <div class="faq-a">
+          <p>Chrome menu → Extensions → MercariBoost → Remove. All local data goes with it. Reinstalling later starts fresh; your Mercari listings re-sync from your account.</p>
+        </div>
+      </details>
+
+      <p class="category-heading">Contact</p>
+
+      <details class="faq-item">
+        <summary class="faq-q">How do I report a bug or request a feature?</summary>
+        <div class="faq-a">
+          <p>Email <a href="mailto:lesteroc15@gmail.com?subject=MercariBoost%20bug%20report">lesteroc15@gmail.com</a> with as much detail as you can: what you were trying to do, what happened instead, Chrome version, and a screenshot if relevant. We reply within 24 hours.</p>
+          <p>For developers: you can also open issues on the extension's <a href="https://github.com/lesteroc15/mercariboost/issues">GitHub repo</a>.</p>
+        </div>
+      </details>
+
+      <hr>
+
+      <p class="footer-note">MercariBoost is independently developed software. Mercari is a trademark of Mercari Inc. This extension is not affiliated with, endorsed by, or sponsored by Mercari Inc.</p>
+    </article>
+  </main>
+
+  <footer class="site">
+    <div class="container">
+      &copy; 2026 MercariBoost · <a href="./">Home</a> · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a>
+    </div>
+  </footer>
+</body>
+</html>
