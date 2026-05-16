@@ -238,6 +238,135 @@ article a {
   font-style: italic;
 }
 
+/* Blog post styles */
+.cta-box {
+  background: linear-gradient(135deg, rgba(232, 38, 28, 0.06) 0%, rgba(196, 31, 23, 0.04) 100%);
+  border: 1px solid rgba(232, 38, 28, 0.2);
+  border-left: 4px solid var(--red);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1.5rem 0;
+}
+
+.cta-box p {
+  margin: 0;
+}
+
+.cta-box a {
+  font-weight: 600;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+}
+
+.data-table th,
+.data-table td {
+  text-align: left;
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table th {
+  background: var(--bg-alt);
+  font-weight: 600;
+}
+
+.post-list {
+  list-style: none;
+  padding: 0;
+}
+
+.post-summary {
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 0;
+}
+
+.post-summary:last-child {
+  border-bottom: none;
+}
+
+.post-summary h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.25rem;
+}
+
+.post-summary h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.post-summary h2 a:hover {
+  color: var(--red-dark);
+}
+
+/* Waitlist email capture */
+.waitlist {
+  margin: 2.5rem 0;
+  padding: 1.75rem;
+  background: var(--bg-alt);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+.waitlist h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.3rem;
+}
+
+.waitlist p {
+  margin: 0 0 1rem;
+  color: var(--muted);
+}
+
+.waitlist form {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.waitlist input[type="email"] {
+  flex: 1 1 240px;
+  min-width: 0;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: white;
+}
+
+.waitlist input[type="email"]:focus {
+  outline: none;
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(232, 38, 28, 0.12);
+}
+
+.waitlist button {
+  padding: 0.7rem 1.25rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-family: inherit;
+  border: 0;
+  background: var(--red);
+  color: white;
+  cursor: pointer;
+}
+
+.waitlist button:hover {
+  background: var(--red-dark);
+}
+
+.waitlist .fine-print {
+  margin-top: 0.75rem;
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
 footer.site {
   border-top: 1px solid var(--border);
   margin-top: 4rem;
